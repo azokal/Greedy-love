@@ -20,7 +20,7 @@ function fillBoard()
       local j = 1
       local tmp = {}
       while j <= width do
-	 tmp[j] = math.random(0, 6)
+	 tmp[j] = math.random(0, 5)
 	 j = j + 1
       end
       board[i] = tmp
@@ -200,7 +200,7 @@ function updateBoard()
 	       swapGem(Pos(j, i-tmp), Pos(j, i-tmp-1))
 	       tmp = tmp + 1
 	    end
-	    board[1][j] = math.random(0, 6)
+	    board[1][j] = math.random(0, 5)
 	 end
 	 j = j + 1
       end
@@ -250,6 +250,15 @@ end
 
 function love.load()
    fillBoard()
+   canvas = love.graphics.newCanvas(800, 600)
+
+    -- Rectangle is drawn to the canvas with the alpha blend mode.
+   love.graphics.setCanvas(canvas)
+      canvas:clear()
+      love.graphics.setBlendMode('alpha')
+      love.graphics.setColor(0, 0, 0, 200)
+      love.graphics.rectangle('fill', 0, 0, 40, 40)
+   love.graphics.setCanvas()
 end
 
 function love.mousereleased(x, y, button)
@@ -294,27 +303,24 @@ function love.draw()
    while i <= height do
       local j = 1
       while j <= width do
-	 if (board[i][j] == 0) then
-	    love.graphics.setColor(0, 255, 0)
-	 elseif (board[i][j] == 1) then
-	    love.graphics.setColor(255, 255, 0)
-	 elseif (board[i][j] == 2) then
-	    love.graphics.setColor(255, 255, 255)
-	 elseif (board[i][j] == 3) then
-	    love.graphics.setColor(255, 0, 255)
-	 elseif (board[i][j] == 4) then
-	    love.graphics.setColor(0, 0, 255)
-	 elseif (board[i][j] == 5) then
-	    love.graphics.setColor(255, 0, 0)
-	 elseif (board[i][j] == 6) then
-	    love.graphics.setColor(0, 255, 255)
-	 end
-	 if (selectedCase1 ~= nil and j == selectedCase1.x and i == selectedCase1.y) or (selectedCase2 ~= nil and j == selectedCase1.x and i == selectedCase1.y) then
-	    love.graphics.rectangle("fill", (j-1) * 40+5, (i-1) * 40+5, 30, 30)
-	 else
-	    love.graphics.rectangle("fill", (j-1) * 40, (i-1) * 40, 40, 40)
-	 end
-	 j = j + 1
+	     if (board[i][j] == 0) then
+         img = love.graphics.newImage("/texture/gems/blockDiamond.png")
+	     elseif (board[i][j] == 1) then
+         img = love.graphics.newImage("/texture/gems/blockEmerald.png")
+	     elseif (board[i][j] == 2) then
+         img = love.graphics.newImage("/texture/gems/blockGold.png")
+	     elseif (board[i][j] == 3) then
+         img = love.graphics.newImage("/texture/gems/blockIron.png")
+	     elseif (board[i][j] == 4) then
+         img = love.graphics.newImage("/texture/gems/blockLapis.png")
+	     elseif (board[i][j] == 5) then
+         img = love.graphics.newImage("/texture/gems/blockRedstone.png")
+	     end
+        love.graphics.draw(img, (j-1) * 40, (i-1) * 40, 0, 0.6, 0.6)
+	     if (selectedCase1 ~= nil and j == selectedCase1.x and i == selectedCase1.y) or (selectedCase2 ~= nil and j == selectedCase1.x and i == selectedCase1.y) then
+         love.graphics.draw(canvas, (j-1) * 40, (i-1) * 40)
+	     end
+	     j = j + 1
       end
       i = i + 1
    end
